@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
 # define VAL_INI 10 //valor inicial
 # define LIM_SUP 200000 //limite superior (até onde vamos para calcular os numeros primos)
@@ -17,6 +18,9 @@ int main(){
     long long int e;
     long long int d;
     long long int tam;
+    FILE *temporPrimo;
+    temporPrimo = fopen("tempoPorPrimo.txt", "a");
+    
 
     //iniciamos nosso vetor de primos com alguns valores
     primo[0] = 2;
@@ -29,6 +33,15 @@ int main(){
 
     time_t begin = time(NULL); //função para calcular o tempo de execução
 
+
+//TEST para grafico
+    struct timeval stop, start;
+    gettimeofday(&start, NULL);
+    char int_str[20];
+    sprintf(int_str, "%s", "TIMES");
+    fprintf(temporPrimo, "%s\n", int_str); 
+
+
     //DESCOBRINDO NUMEROS PRIMOS
     for(numero = VAL_INI; numero < LIM_SUP; numero ++)
     {
@@ -38,12 +51,17 @@ int main(){
         {
             //se um dos valores primos conseguir dividir o numero ja saimos do laço.
             if(numero % div == 0)
+                
                 break;
 
             //se chegar até o fim do vetor de primos, significa q esse valor é um novo numero primo então, armazenamos ele no vetor
             if (div == tam-1){
                 primo[cont] = numero;
                 cont++;
+                gettimeofday(&stop, NULL);
+                sprintf(int_str, "%ld", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+                fprintf(temporPrimo, "%s\n", int_str); //microsecond
+
             }
         }
     }
@@ -112,5 +130,6 @@ int main(){
 
     printf("CHAVE PRIVADA: [%lld]\n", d);
     
+    fclose(temporPrimo);
     return 0;
 }
