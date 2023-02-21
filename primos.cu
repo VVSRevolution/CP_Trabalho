@@ -8,26 +8,25 @@
 
 int main(){
 
-    long long int numero; 
-    long long int div;
-    long long int primo [100000]; //vetor q vai aramazenar todos os numero primos
+
     int i, j, cont;
     long long int p, q; //variaveis para armazenar dois primos (para gerar a chave publica)
     long long int n; //Multiplicação de p e q
-    long long int phi_n;
-    long long int e;
-    long long int d;
-    long long int tam;
+    long long int div, numero, phi_n,e,d,tam;
+    long long int *primo;
+    cudaMallocManaged(&primo, 100000*sizeof(long long int)); //vetor q vai aramazenar todos os numero primos
+
     FILE *temporPrimo;
     temporPrimo = fopen("tempoPorPrimo.txt", "a");
     
 
     //iniciamos nosso vetor de primos com alguns valores
+    
     primo[0] = 2;
     primo[1] = 3;
     primo[2] = 5;
     primo[3] = 7;
-
+    
     cont = 4; //contador vai ser responsavel pelos indices do nosso vetor de primos
 
 
@@ -67,15 +66,6 @@ int main(){
     }
     time_t end = time(NULL); //função para calcular o tempo de execução
 
-
-    //Printa os numeros primos no vetor, mas é desnecessário
-    /*
-    for (i = 0; i < cont; i++)
-    {
-        printf("%lld ", primo[i]);
-    }
-    printf("\n");
-    */
 
 
     printf("Quantidade de numeros primos = %d\n", cont);  //Printa a quantidade de numeros primos entre 2 e o LIM_SUP  
@@ -124,12 +114,13 @@ int main(){
         if((d*e) % phi_n == 1)
             break;
     }
-    time_t end_2 = timefgg(NULL); //função para calcular o tempo de execução
+    time_t end_2 = time(NULL); //função para calcular o tempo de execução
 
     printf("Tempo de execução para calcular a chave privada: %ld segundos\n", (end_2 - begin_2)); //printa o tempo de execução em segundos para descobrir os numeros primos
 
     printf("CHAVE PRIVADA: [%lld]\n", d);
     
+    cudaFree(primo);
     fclose(temporPrimo);
     return 0;
 }

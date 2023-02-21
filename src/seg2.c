@@ -6,6 +6,8 @@
 # define VAL_INI 10 //valor inicial
 # define LIM_SUP 200000 //limite superior (até onde vamos para calcular os numeros primos)
 
+struct timeval start;
+
 int main(){
 
     long long int numero; 
@@ -35,10 +37,13 @@ int main(){
 
 
 //TEST para grafico
-    struct timeval stop, start;
+    struct timeval stop;
+    
     gettimeofday(&start, NULL);
     char int_str[20];
-    sprintf(int_str, "%s", "TIMES");
+    char int_str_time[20];
+    char int_str_prime[20];
+    sprintf(int_str, "%s", "TIME N_PRIME");
     fprintf(temporPrimo, "%s\n", int_str); 
 
 
@@ -59,8 +64,9 @@ int main(){
                 primo[cont] = numero;
                 cont++;
                 gettimeofday(&stop, NULL);
-                sprintf(int_str, "%ld", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
-                fprintf(temporPrimo, "%s\n", int_str); //microsecond
+                sprintf(int_str_prime, "%lld", numero);
+                sprintf(int_str_time, "%ld", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+                fprintf(temporPrimo, "%s %s\n", int_str_time, int_str_prime); //microsecond
 
             }
         }
@@ -124,7 +130,7 @@ int main(){
         if((d*e) % phi_n == 1)
             break;
     }
-    time_t end_2 = timefgg(NULL); //função para calcular o tempo de execução
+    time_t end_2 = time(NULL); //função para calcular o tempo de execução
 
     printf("Tempo de execução para calcular a chave privada: %ld segundos\n", (end_2 - begin_2)); //printa o tempo de execução em segundos para descobrir os numeros primos
 
