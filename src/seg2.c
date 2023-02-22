@@ -46,6 +46,9 @@ int main(){
     sprintf(int_str, "%s", "TIME N_PRIME");
     fprintf(temporPrimo, "%s\n", int_str); 
 
+    struct timeval stopA;
+    struct timeval startA;
+    gettimeofday(&startA, NULL);
 
     //DESCOBRINDO NUMEROS PRIMOS
     for(numero = VAL_INI; numero < LIM_SUP; numero ++)
@@ -72,6 +75,7 @@ int main(){
         }
     }
     time_t end = time(NULL); //função para calcular o tempo de execução
+    gettimeofday(&stopA, NULL);
 
 
     //Printa os numeros primos no vetor, mas é desnecessário
@@ -85,7 +89,7 @@ int main(){
 
 
     printf("Quantidade de numeros primos = %d\n", cont);  //Printa a quantidade de numeros primos entre 2 e o LIM_SUP  
-    printf("Tempo de execução para descobrir os numeros primos: %ld segundos\n", (end - begin)); //printa o tempo de execução em segundos para descobrir os numeros primos
+    printf("Tempo de execução para descobrir os numeros primos: %ld segundos\n", ((stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec)); //printa o tempo de execução em segundos para descobrir os numeros primos
 
 
     //DESCOBRINDO A CHAVE PUBLICA

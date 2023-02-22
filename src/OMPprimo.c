@@ -2,6 +2,7 @@
 #include <omp.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
 # define VAL_INI 10 //valor inicial
 # define LIM_SUP 200000 //limite superior (até onde vamos para calcular os numeros primos)
@@ -28,6 +29,11 @@ int main(){
     cont = 4; //contador vai ser responsavel pelos indices do nosso vetor de primos
 
     time_t begin = time(NULL); //função para calcular o tempo de execução
+
+    struct timeval stop;
+    struct timeval start;
+    gettimeofday(&start, NULL);
+
 
     //DESCOBRINDO NUMEROS PRIMOS
     #pragma omp parallel for private (tam, flag) num_threads(16) 
@@ -57,10 +63,12 @@ int main(){
                     cont = cont + 1;
             }
         }
+
+    gettimeofday(&stop, NULL);
     time_t end = time(NULL); //função para calcular o tempo de execução
 
     printf("Quantidade de numeros primos = %d\n", cont);  //Printa a quantidade de numeros primos entre 2 e o LIM_SUP  
-    printf("Tempo de execução para descobrir os numeros primos: %ld segundos\n", (end - begin)); //printa o tempo de execução em segundos para descobrir os numeros primos
+    printf("Tempo de execução para descobrir os numeros primos: %ld microssegundos\n", ((stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec)); //printa o tempo de execução em segundos para descobrir os numeros primos
 
     p = 193847;
     q = 199049;
